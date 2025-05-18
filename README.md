@@ -44,11 +44,11 @@ HAVING
 ORDER BY 
     total_deposits DESC;
 
-##  Challenges Faced
+## Challenges Faced
 
 One major challenge was **data structure constraints**:
 
-###  Why this doesn't work:
+### Why this doesn't work:
 
 ```sql
 WHERE pp.is_regular_savings = 1 AND pp.is_a_fund = 1
@@ -62,13 +62,13 @@ Use aggregations and conditional counting across multiple rows per user to count
 
 ## 2. Transaction Frequency Analysis
 
-### ✅ Scenario
+### Scenario
 
 The finance team needed a segmentation of users based on how frequently they perform transactions. This helps in understanding customer behavior and tailoring engagement strategies.
 
 ---
 
-### 🧠 Task
+### Task
 
 Calculate the **average number of transactions per customer per month** and categorize them as:
 
@@ -78,14 +78,14 @@ Calculate the **average number of transactions per customer per month** and cate
 
 ---
 
-### 📊 Tables Used
+### Tables Used
 
 - `users_customuser`
 - `savings_savingsaccount`
 
 ---
 
-### 💡 My Approach
+### My Approach
 
 To solve this, I broke down the process into 3 key steps using Common Table Expressions (CTEs):
 
@@ -142,14 +142,59 @@ SELECT
 FROM categorized_customers
 GROUP BY frequency_category;
 
-### ⚠️ Challenge Faced
+### Challenge Faced
 
 Initially, I used `TO_CHAR()` to extract the month and year, which works in **PostgreSQL**. However, the database engine used here is **MySQL**, which led to compatibility issues.
 
-❌ PostgreSQL-only approach:
+PostgreSQL-only approach:
 
 ```sql
 TO_CHAR(ss.transaction_date, 'YYYY-MM')
 
 
+
+3. Account Inactivity Alert
+Scenario
+The operations team requested a report to identify accounts with no inflow transactions for over one year. This helps detect dormant savings or investment accounts for re-engagement or archival.
+
+Task
+Identify all active accounts (either savings or investment) where the last transaction occurred more than 365 days ago, or where no transaction has ever occurred.
+
+Tables Used
+plans_plan: Stores metadata about each plan, including whether it's a savings or investment product.
+
+savings_savingsaccount: Contains transaction history per plan.
+
+Approach
+Join the transaction table (savings_savingsaccount) with the plan metadata (plans_plan) using the plan_id.
+
+Use a CASE statement to classify each plan as 'Savings', 'Investment', or 'Unknown'.
+
+For each plan and customer, calculate the last transaction date using MAX(transaction_date).
+
+Compute the number of inactive days using DATEDIFF(CURDATE(), last_transaction_date).
+
+Filter for records where the inactivity is greater than 365 days or the transaction date is null.
+
+Challenge Faced
+While categorizing plans into 'Savings' or 'Investment', I encountered null values in the is_regular_savings and is_a_fund fields. This made it unclear how to classify certain plans. To handle this, I introduced an 'Unknown' category to capture any ambiguous or incomplete records.
+
+This raised a larger question about data quality. It would be useful to follow up with the product manager or relevant stakeholders to understand whether these nulls are expected or indicate missing data that should be addressed.
+
+Outcome
+The final query reliably flags all inactive accounts and accounts with no recorded transactions, making it easier for the operations team to take action.
+
+
+4. Customer Lifetime Value (CLV) Estimation
+The goal was to estimate the Customer Lifetime Value (CLV) for each customer based on account tenure and transaction volume.
+
+I joined the savings_savingsaccount table with the users_customuser table using the customer ID. I calculated the account tenure in months using the TIMESTAMPDIFF function, which provides a whole number of months between the account creation date and the current date.
+
+For each customer, I calculated the total number of transactions and the average profit per transaction, assuming a profit rate of 0.1% on the confirmed transaction amount. The CLV was estimated using the formula:
+
+CLV = (total_transactions / tenure) * 12 * avg_profit_per_transaction
+
+I ordered the results from the highest to lowest estimated CLV.
+
+A key challenge was avoiding the use of DATEDIFF, which returns the number of days, not months. Using TIMESTAMPDIFF ensured that tenure was calculated in whole months, which aligned with the business requirement for CLV estimation.
 
