@@ -5,7 +5,7 @@ SELECT
         WHEN pp.is_regular_savings = 1 THEN 'Savings'
         WHEN pp.is_a_fund = 1 THEN 'Investment'
         ELSE 'Unknown'
-    END AS type,
+    END AS type, -- use unknown to represent the nulls in the conditional statement
     MAX(ss.transaction_date) AS last_transaction_date,
     DATEDIFF(CURDATE(), MAX(ss.transaction_date)) AS inactivity_days
 FROM adashi_staging.savings_savingsaccount ss

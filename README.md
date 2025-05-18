@@ -72,7 +72,7 @@ Detect accounts with no inflow for over 365 days.
 
 Include accounts with no transaction history.
 
-Classify plans as either 'Savings', 'Investment', or 'Unknown'.
+Classify plans as either 'Savings' or 'Investment'
 
 ### Approach
 Joined savings_savingsaccount with plans_plan using plan_id.
