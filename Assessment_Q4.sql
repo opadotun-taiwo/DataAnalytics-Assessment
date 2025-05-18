@@ -11,4 +11,5 @@ SELECT
 FROM adashi_staging.savings_savingsaccount ss 
 JOIN adashi_staging.users_customuser uc 
     ON ss.owner_id = uc.id 
-GROUP BY ss.owner_id, uc.first_name, uc.last_name;
+GROUP BY ss.owner_id, uc.first_name, uc.last_name
+ORDER BY estimated_clv DESC;
