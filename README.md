@@ -1,6 +1,6 @@
 # DataAnalytics-Assessment
 
-![Image Placeholder](image.png)
+![Image Placeholder](https://drive.google.com/file/d/1Z8GzI98VYixu25wiORE8INvIsDz2z_NO/view?usp=drive_link)
 
 ---
 
