@@ -1,6 +1,6 @@
 # DataAnalytics-Assessment
 
-![Image Placeholder](https://ibb.co/twWV5c8p)
+![Image Placeholder](https://i.ibb.co/zW0qwbGV/Chat-GPT-Image-May-18-2025-04-02-06-PM.png)
 
 ---
 
