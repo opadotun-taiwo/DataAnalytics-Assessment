@@ -3,6 +3,10 @@
 ![Image Placeholder](https://i.ibb.co/zW0qwbGV/Chat-GPT-Image-May-18-2025-04-02-06-PM.png)
 
 ---
+### Tool used
+# Debeaver 
+It was used because of the better interface and intutive approach to writing query (Giving suggestions)
+Database was loaded locally
 
 ## Question 1 – High-Value Customers with Multiple Products
 
