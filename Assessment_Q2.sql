@@ -4,20 +4,15 @@ WITH monthly_txns AS (
         DATE_FORMAT(ss.transaction_date, '%Y-%m') AS ym,
         COUNT(*) AS transactions_in_month
     FROM adashi_staging.savings_savingsaccount ss
-    GROUP BY 
-        ss.owner_id, 
-        DATE_FORMAT(ss.transaction_date, '%Y-%m')
+    GROUP BY ss.owner_id, DATE_FORMAT(ss.transaction_date, '%Y-%m')
 ), -- get the monthly transaction using mysql dialet for date_format
-
 avg_txns_per_customer AS (
     SELECT
         owner_id,
         AVG(transactions_in_month) AS avg_transactions_per_month
     FROM monthly_txns
-    GROUP BY 
-        owner_id
-), -- group the transactions by customer to get what each customer is doing per month
-
+    GROUP BY owner_id
+),-- group the transactions by customer to get what each customer is doing per month
 categorized_customers AS (
     SELECT
         owner_id,
@@ -29,7 +24,6 @@ categorized_customers AS (
         END AS frequency_category
     FROM avg_txns_per_customer
 ) -- categorize customer based on avg_transaction_per_month
-
 SELECT
     frequency_category,
     COUNT(owner_id) AS customer_count,

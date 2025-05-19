@@ -29,7 +29,7 @@ WHERE pp.is_regular_savings = 1 AND pp.is_a_fund = 1
 ```
 This logic was incorrect because it searched for a single plan that is both a savings and investment type, which contradicts the mutually exclusive nature of these plan types.
 
-Resolution: The correct method was to aggregate multiple plans per user and apply conditional filters via CASE statements in the SELECT clause, followed by a HAVING clause to ensure both savings and investment presence.
+Resolution: The correct method was to count multiple plans per distinct user and apply conditional filters via CASE statements in the SELECT clause, followed by a HAVING clause to ensure both savings and investment presence.
 
 ## Question 2 – Transaction Frequency Analysis
 Scenario

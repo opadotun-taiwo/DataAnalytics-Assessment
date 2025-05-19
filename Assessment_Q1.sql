@@ -1,8 +1,8 @@
 SELECT 
     ss.owner_id, 
     CONCAT(uc.first_name, ' ', uc.last_name) AS name, 
-    SUM(CASE WHEN pp.is_regular_savings = 1 THEN 1 ELSE 0 END) AS savings_count, -- aggregation to get count of savings instead of using where clause
-    SUM(CASE WHEN pp.is_a_fund = 1 THEN 1 ELSE 0 END) AS investment_count,
+    COUNT(DISTINCT CASE WHEN pp.is_regular_savings = 1 THEN ss.plan_id END) AS savings_count,
+    COUNT(DISTINCT CASE WHEN pp.is_a_fund = 1 THEN ss.plan_id END) AS investment_count,
     SUM(ss.confirmed_amount) AS total_deposits
 FROM adashi_staging.savings_savingsaccount ss 
 JOIN adashi_staging.users_customuser uc 
